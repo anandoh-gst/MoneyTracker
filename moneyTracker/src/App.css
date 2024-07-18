@@ -1,0 +1,135 @@
+body {
+  background-color: #000000;
+  color: #ddd;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+main{
+  max-width: 360px;
+  margin: 30px auto;
+}
+
+h1{
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 2.5rem;
+}
+
+h1 span{
+  font-size: 1rem;
+  vertical-align: top;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+form{
+  margin-top: 20px;
+}
+
+form input{
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  border: 2px solid #30313d;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+form input[type="submit"]{
+  color: #777;
+}
+
+form div.basic{
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+form button{
+  width: 100%;
+  margin-top: 5px;
+  border: 0;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #ddd;
+  background-color: hsl(125, 47%, 54%);
+
+}
+
+div.transactions{
+  margin-top: 10px;
+}
+
+div.transaction{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-top: 1px solid #30313d;
+}
+
+div.transaction:first-child{
+  border-top: 0;
+}
+
+div.transaction div.name{
+  font-size: 1rem;
+}
+
+div.transaction div.description{
+  font-size: .7rem;
+  color: #888;
+}
+
+div.right{
+  text-align: right;
+}
+
+div.price.green{
+  color: #1c1;
+}
+
+div.price.red{
+  color: #d31;
+}
+
+div.transaction div.datetime{
+  font-size: .7rem;
+  color: #888;
+}
+
+/* STILE PULSANTI */
+
+.add-button{
+  background-color: hsl(125, 47%, 54%);
+}
+
+.add-button:hover{
+  background-color: hsl(125, 47%, 44%);
+}
+
+.delete-button{
+  width: fit-content;
+  background-color: hsl(10, 90%, 50%);
+}
+
+.delete-button:hover{
+  background-color: hsl(10, 90%, 40%);
+}
+
+.move-button{
+  background-color: hsl(207, 90%, 64%);
+}
+
+.move-button:hover{
+  background-color: hsl(207, 90%, 54%);
+}
+
+/* .delete-button, .move-button{
+  padding: 8px 12px;
+  font-size: 1.4rem;
+  margin-left: 10px;
+} */
