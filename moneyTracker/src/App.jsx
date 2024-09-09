@@ -7,49 +7,54 @@ function App() {
   const [datetime, setDatetime]         = useState("");
   const [description, setDescription]   = useState("Mese: " + getCurrentMonthName()); // DEFAULT MESE "CORRENTE"
   const [transactions, setTransactions] = useState("");
+
 // AGGIUNGI TRANZAZIONE
-  function addNewTransaction(event) {
+function addNewTransaction(event) {
 
-    event.preventDefault();
+  event.preventDefault();
 
-    // const url = process.env.REACT_APP_API_URL;
-    const url = import.meta.env.VITE_API_URL + "/transaction";
-    const price = name.split(' ')[0];  // il prezzo sarà la prima parte del valore name
-    const transactionName = name.substring(price.length + 1); // di conseguenza il nome rimane la seconda parte
+  // const url = process.env.REACT_APP_API_URL;
+  const url = import.meta.env.VITE_API_URL + "/transaction";
+  const price = name.split(' ')[0];  // il prezzo sarà la prima parte del valore name
+  const transactionName = name.substring(price.length + 1); // di conseguenza il nome rimane la seconda parte
 
-    fetch(url, {
-      method: "POST",
-      headers: {'Content-type': 'application/json'},
-      body: JSON.stringify({ 
-        name: transactionName, 
-        price, 
-        datetime, 
-        description 
-      })
+  fetch(url, {
+    method: "POST",
+    headers: {'Content-type': 'application/json'},
+    body: JSON.stringify({ 
+      name: transactionName, 
+      price, 
+      datetime, 
+      description 
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(json => {
+  })
+  .then(response => {
+    if (!response.ok) {
+      const errorMessage = 'Sorry, Failed to create transaction';
+      console.error("🚀 :" + errorMessage);
+      throw new Error('There are a issue with your Network response! 😰');
+    }
+    return response.json();
+  })
+  .then(json => {
 
-      setName('');
-      setDatetime('');
-      setDescription('');
+    setName('');
+    // setDatetime('');
+    // setDescription('');
 
-      console.log("result", json);
+    console.log("result", json);
 
-      // Update transactions state after successful POST request
-      getTransactions().then(transactions => {
-        setTransactions(transactions);
-      });
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error);
+    // Update transactions state after successful POST request
+    getTransactions().then(transactions => {
+      setTransactions(transactions);
     });
-  }
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+}
+
+  
 // CANCELLA TRANSAZIONE
   function deleteTransaction(transactionIndex){
 
@@ -77,6 +82,8 @@ function App() {
       console.error('There was a problem with the fetch operation:', error);
     });
 }
+
+
 // RECUPERA TRANSAZIONI
   async function getTransactions() {
     
@@ -86,6 +93,8 @@ function App() {
     return await response.json();
     
   }
+
+
 // RECUPERO NOME MESE CORRENTE
 function getCurrentMonthName() {
   const now = new Date();
@@ -95,6 +104,8 @@ function getCurrentMonthName() {
   ];
   return monthNames[now.getMonth()];
 }
+
+
 // RECUPERO NOME MESE PRECEDENTE
 function getPreviousMonthName() {
   const now = new Date();
@@ -105,6 +116,8 @@ function getPreviousMonthName() {
   ];
   return monthNames[now.getMonth()];
 }
+
+
 // FORMATTA DATA CORRENTE
 function getCurrentDateTime() {
   const now     = new Date();
@@ -116,6 +129,7 @@ function getCurrentDateTime() {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
 // FORMATTA DATA
 function formatDateTime(datetimeString) {
   const date = new Date(datetimeString);
@@ -127,6 +141,8 @@ function formatDateTime(datetimeString) {
 
   return `${day}-${month}-${year} ${hours}:${minutes}`;
 }
+
+
 // AGGIORNA IN TEMPO REALE
   useEffect( () => {
 
@@ -136,6 +152,8 @@ function formatDateTime(datetimeString) {
       setTransactions(transactions);
     });
   }, []);
+
+
 // CALCOLA BILANCIO SPESE
   let balance = 0;
   for (const transaction of transactions) {
@@ -146,6 +164,7 @@ function formatDateTime(datetimeString) {
   balance = balance.split('.')[0]; // intero
   const valuta = " €";
   
+
   return (
     <>
       <main>
@@ -157,6 +176,7 @@ function formatDateTime(datetimeString) {
         <form onSubmit={addNewTransaction}>
 
 
+          {/* Transaction name and date */}
           <div className="basic">
 
             <input 
@@ -176,6 +196,7 @@ function formatDateTime(datetimeString) {
 
           </div>
           
+          {/* Description */}
           <div className="description">
 
             <input 
@@ -188,6 +209,7 @@ function formatDateTime(datetimeString) {
 
           </div>
 
+          {/* ADD TRANSACTION BUTTON */}
           <button type="submit">Add new transaction</button>
 
         </form>
@@ -198,6 +220,7 @@ function formatDateTime(datetimeString) {
             
             <div className="transaction" key={transaction._id}>
 
+              {/* Transaction Name and Description */}
               <div className="left">
 
                 <div className="name">{transaction.name}</div>
@@ -205,6 +228,7 @@ function formatDateTime(datetimeString) {
 
               </div>
 
+              {/* Transaction Price and Date */}
               <div className="right">
 
                 <div className={"price " + (transaction.price < 0 ? 'red' : 'green')}>
@@ -214,23 +238,29 @@ function formatDateTime(datetimeString) {
                 
               </div>
 
+              {/* Delete Transaction Button */}
               <button
                   className="delete-button"
                   onClick={ () => deleteTransaction(transaction._id) }>
                   Cancella
               </button>
 
-              {/* <button
-                  className="move-button"
-                  onClick={ () => moveTaskUp(transaction._id) }>
-                  Move Up
-              </button>
+              <div>
+                {/* Move Up
+                <button
+                    className="move-button"
+                    onClick={ () => moveTaskUp(transaction._id) }>
+                    Move Up
+                </button>
 
-              <button
-                  className="move-button"
-                  onClick={ () => moveTaskDown(transaction._id) }>
-                  Move Down
-              </button> */}
+                Move Down
+                <button
+                    className="move-button"
+                    onClick={ () => moveTaskDown(transaction._id) }>
+                    Move Down
+                </button> */}
+
+              </div>
 
             </div>
           )) }

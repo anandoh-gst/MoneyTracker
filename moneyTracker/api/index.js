@@ -11,12 +11,26 @@ app.use(cors());
 
 app.use(express.json()); // Per parsare il body delle richieste come JSON
 
+/* GET TEST MESSAGE */
 app.get('/api/test', (req, res) => {
 
     res.json('Test! Hello, World! porta 4000');
 
 });
 
+
+/* GET ALL TRANSACTIONS */
+app.get('/api/transactions', async (req, res) => {
+
+    await mongoose.connect(process.env.MONGO_URL);
+
+    const transactions = await Transaction.find();
+
+    res.json(transactions);
+
+})
+
+/* SET NEW TRANSACTION */ 
 app.post('/api/transaction', async (req, res) => {
     
     await mongoose.connect(process.env.MONGO_URL);
@@ -28,21 +42,15 @@ app.post('/api/transaction', async (req, res) => {
         res.json(transaction);
     } 
     catch (error) {
-        res.status(500).json({ error: 'Failed to create transaction' });
+        const errorMessage = 'Sorry, Failed to create transaction';
+        res.status(500).json({ error: error.message + " " + errorMessage });
+        console.error("🚀 :" + errorMessage);
     }
 
 });
 
-app.get('/api/transactions', async (req, res) => {
 
-    await mongoose.connect(process.env.MONGO_URL);
-
-    const transactions = await Transaction.find();
-
-    res.json(transactions);
-
-})
-
+/* DELETE TRANSACTION */
 app.delete('/api/transaction/:id', async (req, res) => {
 
     const { id } = req.params;
@@ -62,6 +70,7 @@ app.delete('/api/transaction/:id', async (req, res) => {
     }
 });
 
+/* LISTENER SERVER */
 app.listen(4000, () => {
     console.log('Server is running on port 4000');
 });
