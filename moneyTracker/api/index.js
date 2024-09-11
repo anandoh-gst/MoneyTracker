@@ -6,10 +6,11 @@ import dotenv       from 'dotenv';
 
 dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 4000; // ASSEGNA PORTA DI PRODUZIONE, SE SVILUPPO PORTA:4000
 
 app.use(cors());
 
-app.use(express.json()); // Per parsare il body delle richieste come JSON
+app.use(express.json()); // Per TRASFORMA il body delle richieste in JSON
 
 /* GET TEST MESSAGE */
 app.get('/api/test', (req, res) => {
@@ -71,6 +72,6 @@ app.delete('/api/transaction/:id', async (req, res) => {
 });
 
 /* LISTENER SERVER */
-app.listen(4000, () => {
-    console.log('Server is running on port 4000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
