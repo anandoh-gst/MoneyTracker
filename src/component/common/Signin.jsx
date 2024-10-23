@@ -6,7 +6,7 @@ export default function Signin() {
 
 
   return (
-    
+
   <form action="/signup">
     <h2>Sign up</h2>
     <label for="email">Email</label> 
@@ -16,5 +16,7 @@ export default function Signin() {
     <input type="password" name="password" required />
     <div class="password error"></div>
     <button>Sign up</button>
-  </form>  )
+  </form>  
+  
+  )
 }

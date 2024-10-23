@@ -1,3 +1,7 @@
+/* google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
 body {
   background-color: #000000;
   color: #ddd;
@@ -140,9 +144,6 @@ div.transaction div.datetime{
 
 /*********************************    **********************************/
 /*********************************  STILE PER LOG-PAGE, SIGN-PAGE E HOMEPAGE  **********************************/
-
-/* google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 body{
   margin: 20px 40px;
