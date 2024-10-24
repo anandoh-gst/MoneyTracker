@@ -1,5 +1,5 @@
 import express              from 'express';
-import { getAllElements, addElement, deleteElement } from '../controllers/transactionControllers.js';
+import { getElement, getAllElements, addElement, deleteElement } from '../controllers/transactionControllers.js';
 import Transaction          from '../models/transaction.js';
 import User                 from '../models/user.js';
 import TestTransaction      from '../models/test_transaction.js';
@@ -17,33 +17,35 @@ router.get('/api/testTransactions',             getAllElements(TestTransaction, 
 router.post('/api/testTransaction',             addElement(TestTransaction, "Transaction"));                /* ADD NEW  */
 router.delete('/api/testTransaction/:id',       deleteElement(TestTransaction, "Transaction"));             /* DELETE  */
 
-// USERS
+// ADMIN MANAGE USERS
 router.get('/api/users',                        getAllElements(User, "Users"));                             /* GET ALL USERS */
-router.post('/api/user',                        addElement(User, "User"));                                  /* ADD NEW USER */
 router.delete('/api/user/:id',                  deleteElement(User, "User"));                               /* DELETE USER */
 
+// SIGNUP
+router.post('/api/signup',                      addElement(User, "User", "signup"));                                  /* ADD NEW USER */
+
 // LOGIN
-// TODO
+router.post('/api/login',                       getElement(User, "User", "login"));                                  /* GET USER */
 
 // COOKIES
-router.get('/api/set-cookie',                   (req, res) => {
+// router.get('/api/set-cookie',                   (req, res) => {
 
-    // res.cookie('Set-Cookie', 'newUser=true', { expires: new Date(Date.now() + 900000) }); // expires in 15 minutes
+//     // res.cookie('Set-Cookie', 'newUser=true', { expires: new Date(Date.now() + 900000) }); // expires in 15 minutes
 
-    res.cookie("newUser", false);
-    res.cookie("isUsername", true, { maxAge: 450000, httpOnly: true });
+//     res.cookie("newUser", true);
+//     res.cookie("isUsername", true, { maxAge: 450000, httpOnly: true });
 
-    res.send('Congrats, Cookie set!');
+//     res.send('Congrats, Cookie set!');
 
-})
-router.get('/api/read-cookie',                  (req, res) => {
+// })
+// router.get('/api/read-cookie',                  (req, res) => {
 
-    const cookies = req.cookies;
-    console.log(cookies.newUser);
+//     const cookies = req.cookies;
+//     console.log(cookies.newUser);
 
-    res.json(cookies);
+//     res.json(cookies);
     
-})
+// })
 
 
 export default router;

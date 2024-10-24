@@ -52,19 +52,24 @@ export default function Signin() {
       return setIsSubmitting(false);
     }
 
+    // Logs
     console.log("Submitting form...");
-    console.log(" username:", username);
-    console.log(" email:", email);
-    console.log(" password:", password);
+    console.log(" username:", username + " email:", email + " password:", password);
 
     // Sign Up Api Call
+    const url = import.meta.env.VITE_API_URL + "/signup";
 
-    //     const url = import.meta.env.VITE_API_URL + "/signup";
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   headers: { "Content-type": "application/json" },
-    //   body: JSON.stringify({ username, email, password, role }),
-    // });
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ username, email, password, role }),
+      });
+    } catch (err) {
+      console.error("Error signing up: ", err);
+    }
+
   };
 
   return (
