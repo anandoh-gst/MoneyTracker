@@ -280,3 +280,8 @@ footer{
   margin-top: 120px;
   color: #aaa;
 }
+.error-message {
+  color: red;          /* Colore del testo */
+  font-weight: bold;  /* Grassetto per il testo */
+  margin-top: 0.5rem; /* Margine superiore per spazio */
+}

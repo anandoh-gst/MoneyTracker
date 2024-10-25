@@ -27,25 +27,5 @@ router.post('/api/signup',                      addElement(User, "User", "signup
 // LOGIN
 router.post('/api/login',                       getElement(User, "User", "login"));                                  /* GET USER */
 
-// COOKIES
-// router.get('/api/set-cookie',                   (req, res) => {
-
-//     // res.cookie('Set-Cookie', 'newUser=true', { expires: new Date(Date.now() + 900000) }); // expires in 15 minutes
-
-//     res.cookie("newUser", true);
-//     res.cookie("isUsername", true, { maxAge: 450000, httpOnly: true });
-
-//     res.send('Congrats, Cookie set!');
-
-// })
-// router.get('/api/read-cookie',                  (req, res) => {
-
-//     const cookies = req.cookies;
-//     console.log(cookies.newUser);
-
-//     res.json(cookies);
-    
-// })
-
 
 export default router;

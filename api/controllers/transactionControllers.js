@@ -33,19 +33,32 @@ export const addElement = (model, elementName, tokenValue) => async (req, res) =
     const data = req.body;
 
     try {
-        // GESTIONE API E TOKEN
-        const element = await model.create(data);                                       // CREA NUOVO ELEMENTO CON I DATI DI REQ.BODY
-
+        // REGISTRAZIONE UTENTE
         if (tokenValue === "signup") {
-            const token = createToken(element._id);
+            // VERIFICA PRESENZA EMAIL NEL DB
+            const existingElement = await model.findOne({ email: data.email });
 
-            res.cookie('jwt', token, {
-                httpOnly: true,
-                maxAge: 3 * 24 * 60 * 60 * 1000,  // 3 giorni
-                sameSite: 'Lax',                 // Permetti l'uso cross-origin se necessario
-            });
-            res.status(201).json({ element: element._id });
-        } else {
+            if (existingElement) {
+                return res.status(409).json({ error: "L'email esiste già. Usa un'altra email." });
+
+            }else { 
+                // CREAZIONE NUOVO UTENTE
+                const element = await model.create(data);
+                // GESTIONE API E TOKEN
+                const token = createToken(element._id);
+                
+                res.cookie('jwt', token, {
+                    httpOnly: true,
+                    maxAge: 3 * 24 * 60 * 60 * 1000,  // 3 giorni
+                    sameSite: 'Lax',                 // Permetti l'uso cross-origin se necessario
+                });
+
+                res.status(201).json({ element: element._id });
+            } 
+
+        }else {
+            // CREA NUOVO ELEMENTO
+            const element = await model.create(data);                                       
             res.status(201).json(element);
         }
 
@@ -110,12 +123,11 @@ const handleErrors = (err) => {
 
   // validation errors
   if (err.message.includes('user validation failed')) {
-    // console.log(err);
+
     Object.values(err.errors).forEach(({ properties }) => {
-      // console.log(val);
-      // console.log(properties);
       errors[properties.path] = properties.message;
     });
+
   }
 
   return errors;
