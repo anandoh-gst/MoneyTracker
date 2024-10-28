@@ -22,10 +22,10 @@ router.get('/api/users',                        getAllElements(User, "Users")); 
 router.delete('/api/user/:id',                  deleteElement(User, "User"));                               /* DELETE USER */
 
 // SIGNUP
-router.post('/api/signup',                      addElement(User, "User", "signup"));                                  /* ADD NEW USER */
+router.post('/api/signup',                      addElement(User, "User", "signup"));                        /* ADD NEW USER */
 
 // LOGIN
-router.post('/api/login',                       getElement(User, "User", "login"));                                  /* GET USER */
+router.post('/api/login',                       getElement(User, "User", "login"));                         /* GET USER */
 
 
 export default router;

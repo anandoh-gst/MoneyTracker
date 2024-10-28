@@ -3,15 +3,35 @@ import jwt from 'jsonwebtoken';
 
 
 /* GET Element */
-export const getElement = (model, elementName) => async (req, res) => {
+export const getElement = (model, elementName, tokenValue) => async (req, res) => {
     
-    const data = req.body;
+    const { email, password } = req.body;
 
     try {
-        const results = await model.find(data);                           
-        res.json(results);                                              // RITORNA JSON
+        // LOGIN UTENTE
+        if (tokenValue === "login") {
+
+            // VERIFICA EMAIL E PASSWORD
+            const userVerified = await model.login( email, password );
+            res.status(200).json({ user: userVerified._id });
+
+        }else {
+            const results = await model.findOne(data);                           
+            res.json(results);                                              // RITORNA JSON
+        }
     } catch (error) {
-        res.status(500).json({ error: `Failed to fetch results of ${elementName}` });
+        if (tokenValue === "login") {
+
+            const errorMessage = error.message;
+
+            console.log("Error: " + errorMessage);
+
+            res.status(400).json({errorMessage: errorMessage , errorType: error.errorType });
+
+        }else{
+
+            res.status(500).json({ error: `Failed to fetch results of ${elementName}` });
+        }
     }
 }
 

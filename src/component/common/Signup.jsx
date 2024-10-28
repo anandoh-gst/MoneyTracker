@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const [username, setUsername] = useState("");
@@ -11,6 +12,7 @@ export default function Signin() {
     password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate(); // GESTISCE ROTTE
 
 
   // Validazione Inputs
@@ -58,7 +60,7 @@ export default function Signin() {
     return emailRegex.test(email);
   };
 
-  
+
   // Gestione Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -87,6 +89,8 @@ export default function Signin() {
         // console.log("User signed up successfully!");
         // console.log("Submitting form...");
         // console.log(" username:", username + " email:", email + " password:", password);
+
+        navigate('/');
       } else {
         setErrors({email: data.error || "Zio l'email c'è già!" });
         console.warn(data.error);
