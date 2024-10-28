@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./component/common/Login";
 import Logout from "./component/common/Logout";
 import Signup from "./component/common/Signup";
+import NavBar from "./component/common/NavBar";
 import TransactionView from "./component/transaction/TransactionView";
 import "./css/App.css";
 import Home from "./Home";
@@ -12,7 +13,7 @@ function App() {
     <>
       <main className="container mt-5">
         <Router>
-          {/* <NavBar /> */}
+          <NavBar />
           <Routes>
             <Route exact  path="/"                  element={<Home />}            ></Route>
             <Route exact  path="/signup"            element={<Signup />}          ></Route>

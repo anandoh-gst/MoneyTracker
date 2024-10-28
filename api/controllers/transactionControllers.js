@@ -13,6 +13,13 @@ export const getElement = (model, elementName, tokenValue) => async (req, res) =
 
             // VERIFICA EMAIL E PASSWORD
             const userVerified = await model.login( email, password );
+            const token = createToken(userVerified._id);
+            
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                maxAge: 3 * 24 * 60 * 60 * 1000,  // 3 giorni
+                sameSite: 'Lax',                 // Permetti l'uso cross-origin se necessario
+            });
             res.status(200).json({ user: userVerified._id });
 
         }else {
