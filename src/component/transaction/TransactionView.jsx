@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../../css/App.css";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [name, setName] = useState("");
-  const [datetime, setDatetime] = useState("");
-  const [description, setDescription] = useState("Mese: " + getCurrentMonthName()); // DEFAULT MESE "CORRENTE"
-  const [transactions, setTransactions] = useState("");
+
+  const [name, setName]                         = useState("");
+  const [datetime, setDatetime]                 = useState("");
+  const [description, setDescription]           = useState("Mese: " + getCurrentMonthName()); // DEFAULT MESE "CORRENTE"
+  const [transactions, setTransactions]         = useState("");
+  const navigate                                = useNavigate();
+
 
 
   // AGGIUNGI TRANZAZIONE
@@ -84,19 +88,40 @@ function App() {
   async function getTransactions() {
 
     try {
-      const url = import.meta.env.VITE_API_URL + "/transactions";
-      const response = await fetch(url);
+      const url                     = import.meta.env.VITE_API_URL + "/transactions";
+      const response                = 
+        await fetch(url, {
+          method: 'GET',
+          credentials: 'include',  // Importante per inviare i cookie
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
 
-      if (!response.ok) {  // Controlla se risposta è ok (status 200-299)
-        const errorData = await response.json();
-        throw new Error(errorData  ||  "Error: cannot fetch data!");
+      // Verifica se risposta è ok (status 200-299)
+      if (!response.ok) { 
+
+        const errorData             = await response.json();
+        const errorMessage          = new Error( errorData.error  ||  "Error: cannot fetch data!");
+
+        errorMessage.code           = response.status || "";
+        errorMessage.statusText     = "Status: " + response.status + " - " + response.statusText;
+        throw errorMessage;
       }
 
       return await response.json();
       
     } catch (error) {
-      console.error("There was a problem with the fetch operation: ", error);
-      throw error;
+      // GESTIONE ERRORI
+      if(error.code === 401){
+        
+        console.warn("message: ", error.message);
+        navigate("/login");
+      }
+      
+      console.error("There was a problem with the fetch operation.");
+      console.warn(error.statusText)
+      console.warn(error);
     }
 
   }

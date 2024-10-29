@@ -19,8 +19,13 @@ app.use(cors({
 app.use(express.json());                                // TRASFORMA *Tutte le rotte il body delle richieste in JSON!
 app.use(cookieParser());                                // Gestione dei cookie
 
-
 connectionDb();                                         // All'avvio applica connsessione al DB
+
+
+// app.use((req, res, next) => {
+//     console.log("Cookies: ", req.cookies);
+//     next();
+// });
 
 app.use(transactionRoutes);                             // Carica rotte per gestire le transazioni
 
